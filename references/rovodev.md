@@ -27,6 +27,17 @@ acli rovodev auth login --email you@example.com --token < token.txt
 
 ---
 
+## rovodev run
+
+Launches the Rovo Dev AI coding agent (interactive, Beta). Not scriptable — starts an interactive
+session, so do not run it inside automation pipelines. Requires prior `rovodev auth login`.
+
+```bash
+acli rovodev run
+```
+
+---
+
 ## feedback
 
 Submit a request or report a problem.

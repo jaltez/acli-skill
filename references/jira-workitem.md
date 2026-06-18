@@ -23,6 +23,9 @@ acli jira workitem create [flags]
 | `--type` | `-t` | `Epic`, `Story`, `Task`, `Bug`, `Subtask`, ... |
 | `--assignee` | `-a` | Email, account ID, `@me`, or `default` |
 | `--description` | `-d` | Plain text or ADF |
+| `--description-file` | | Read description (plain text or ADF) from file |
+| `--editor` | `-e` | Open editor to specify summary + description |
+| `--from-file` | `-f` | Read summary + description from file |
 | `--label` | `-l` | Comma-separated labels |
 | `--parent` | | Parent work-item key |
 | `--from-json` | | Read fields from JSON file |
@@ -61,12 +64,14 @@ Modify one or many work items.
 | `--key` | `-k` | Comma-separated keys (or use `--jql`/`--filter`) |
 | `--summary` | `-s` | New title |
 | `--description` | `-d` | New description |
+| `--description-file` | | Read description (plain text or ADF) from file |
 | `--assignee` | `-a` | Email / account ID / `@me` / `default` |
 | `--remove-assignee` | | Unassign |
 | `--type` | `-t` | Change type |
 | `--labels` | `-l` | Set labels |
 | `--remove-labels` | | Remove labels |
-| `--from-json` | | Load from JSON |
+| `--filter` | | Filter ID of work items to edit |
+| `--from-json` / `--generate-json` | | JSON load / template |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
 
 ```bash
@@ -120,6 +125,8 @@ acli jira workitem search --jql "project = PROJECT-KEY AND status = 'In Progress
 | `--key` | `-k` | Keys (or `--jql`/`--filter`/`--from-file`) |
 | `--assignee` | `-a` | Email / account ID / `@me` / `default` |
 | `--remove-assignee` | | Unassign |
+| `--filter` | | Filter ID of work items to assign |
+| `--from-file` | `-f` | Read keys/IDs from file |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
 
 ```bash
@@ -133,6 +140,7 @@ acli jira workitem assign --jql "project = PROJECT-KEY" --assignee "you@example.
 |------|-------|-------------|
 | `--key` | `-k` | Keys (or `--jql`/`--filter`) |
 | `--status` | `-s` | Target status name |
+| `--filter` | | Filter ID of work items to transition |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
 
 ```bash
@@ -149,6 +157,8 @@ acli jira workitem transition --jql "project = PROJECT-KEY AND sprint in openSpr
 | Flag | Short | Description |
 |------|-------|-------------|
 | `--key` | `-k` | Keys (or `--jql`/`--filter`/`--from-file`) |
+| `--filter` | | Filter ID of work items to delete |
+| `--from-file` | `-f` | Read keys/IDs from file |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
 
 ```bash
@@ -163,6 +173,9 @@ acli jira workitem delete --jql "project = PROJECT-KEY AND status = Done"   # pr
 | `--key` | `-k` | Keys to clone (or `--jql`/`--filter`/`--from-file`) |
 | `--to-project` | | Target project key |
 | `--to-site` | | Target site (defaults to current) |
+| `--filter` | | Filter ID of work items to clone |
+| `--from-file` | `-f` | Read keys/IDs from file |
+| `--jql` | | JQL query for work items to clone |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
 
 ```bash
@@ -175,8 +188,11 @@ Archive makes a work item read-only; `unarchive` restores it. Lighter confirmati
 
 | Flag | Short | Description |
 |------|-------|-------------|
-| `--key` | `-k` | Keys (or `--jql`/`--filter`/`--from-file` for `archive`) |
+| `--key` | `-k` | Keys (or, for `archive`: `--jql`/`--filter`/`--from-file`) |
+| `--from-file` | `-f` | Read keys/IDs from file (both `archive` and `unarchive`) |
 | `--ignore-errors` / `--yes` / `--json` | | See [common-flags.md](common-flags.md) |
+
+> `archive` accepts `--jql`/`--filter`; `unarchive` does **not** — it only targets `--key`/`--from-file`.
 
 ```bash
 acli jira workitem archive --key WORK-1,WORK-2

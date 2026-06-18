@@ -90,6 +90,7 @@ acli confluence space update --key SPACEKEY --name "Renamed Space"
 ## space archive / restore — reversible
 
 Archive a space by key; restore brings it back. Reversible-but-impactful (see safety tier 4).
+Both take `--key <SPACEKEY>` (required) and optional `--json`.
 
 ```bash
 acli confluence space archive --key SPACEKEY

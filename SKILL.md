@@ -6,6 +6,7 @@ compatibility: "Requires the acli binary (https://developer.atlassian.com/cloud/
 metadata:
   author: javier
   version: "1.0"
+  acli_version: ">=1.3.19"
 ---
 
 # Atlassian CLI (`acli`) — agent guide
@@ -85,6 +86,15 @@ acli jira board list-sprints --id 1 --state active                              
 acli jira sprint list-workitems --sprint 1 --board 6                               # references/jira-project-board-sprint.md
 ```
 
+### I want to manage boards or sprints
+```bash
+acli jira board create --name "..." --type scrum --location-type project --project PROJ  # references/jira-project-board-sprint.md
+acli jira board delete --id 12,34                                            (confirm)  # references/jira-project-board-sprint.md
+acli jira sprint create --name "Sprint 1" --board 5 --start 2025-01-01 --end 2025-01-14   # references/jira-project-board-sprint.md
+acli jira sprint update --id 37 --state closed                                          # references/jira-project-board-sprint.md
+acli jira sprint delete --id 37,42                                            (confirm)  # references/jira-project-board-sprint.md
+```
+
 ### I want to work in Confluence
 ```bash
 acli confluence space list --json                                                    # references/confluence.md
@@ -112,13 +122,13 @@ acli feedback --summary "..." --details "..." --email you@example.com           
 One line per command. Open the linked file for flags and examples.
 
 **jira workitem** → [`references/jira-workitem.md`](references/jira-workitem.md)
-`create` · `create-bulk` · `edit` · `view` · `search` · `assign` · `transition` · `delete` · `clone` · `archive` · `unarchive` · `comment (create/update/delete/list/visibility)` · `link (create/delete/list/type)` · `attachment (list/delete)` · `watcher remove`
+`create` · `create-bulk` · `edit` · `view` · `search` · `assign` · `transition` · `delete` · `clone` · `archive` · `unarchive` · `comment (create/update/delete/list/visibility)` · `link (create/delete/list/type)` · `attachment (list/delete)` · `list-watchers` · `watcher remove` (`watcher list` deprecated → `list-watchers`)
 
 **jira project / board / sprint** → [`references/jira-project-board-sprint.md`](references/jira-project-board-sprint.md)
-`project (list/view/create/update/delete/archive/restore)` · `board (search/list-sprints)` · `sprint (list-workitems)`
+`project (list/view/create/update/delete/archive/restore)` · `board (create/view/delete/list-projects/search/list-sprints)` · `sprint (create/view/update/delete/list-workitems)`
 
 **jira filter / dashboard / field** → [`references/jira-filter-dashboard-field.md`](references/jira-filter-dashboard-field.md)
-`filter (list/search/add-favourite/change-owner)` · `dashboard (search)` · `field (create/delete/cancel-delete)`
+`filter (list/search/view/update/add-favourite/change-owner/list-columns/reset-columns)` · `dashboard (search)` · `field (create/update/delete/restore)` (`cancel-delete` deprecated → `restore`)
 
 **confluence** → [`references/confluence.md`](references/confluence.md)
 `auth (login/logout/status/switch)` · `space (list/view/create/update/archive/restore)` · `blog (create/list/view)` · `page (view)`
@@ -127,7 +137,7 @@ One line per command. Open the linked file for flags and examples.
 `auth (login/logout/status/switch)` · `user (activate/deactivate/delete/cancel-delete)`
 
 **rovodev / feedback** → [`references/rovodev.md`](references/rovodev.md)
-`rovodev auth (login/logout/status)` · `feedback`
+`rovodev auth (login/logout/status)` · `rovodev run` (interactive agent) · `feedback`
 
 Shared flags (`--json`, `--csv`, `--limit`, `--paginate`, `--yes`, `--ignore-errors`, bulk targeting):
 [`references/common-flags.md`](references/common-flags.md)
@@ -139,7 +149,7 @@ Apply these before running. Details and rationale: [`references/common-flags.md`
 1. **Secrets** — tokens/keys come from env vars (`$API_TOKEN`, `$API_KEY`) or stdin (`< token.txt`). Never hardcode, echo, or log them. Prefer OAuth (`--web`) for interactive use.
 2. **Irreversible deletes** — `jira workitem delete`, `jira project delete`, `jira field delete`, `admin user delete`: **confirm in the current turn** even if `--yes` is available.
 3. **Bulk targeting** — before any destructive/impactful command using `--jql`/`--filter`/`--from-file`/comma `--key`, first run a `search` with the same query and show the affected set. Do not add `--yes` to destructive bulk runs unless the user explicitly wants unattended execution.
-4. **Reversible-but-impactful** — `archive`/`unarchive`, `project restore`, `admin user cancel-delete`, `field cancel-delete`: lighter confirmation; note they are reversible.
+4. **Reversible-but-impactful** — `archive`/`unarchive`, `project restore`, `admin user cancel-delete`, `field restore`: lighter confirmation; note they are reversible.
 5. **Org-wide admin tier** — `acli admin user *` is org-scoped, not project-scoped:
    - Require **fresh confirmation this turn**; earlier approval does not carry over.
    - **Enumerate targets first**: resolve `--email`/`--id`/`--from-file` to a concrete list (count + entries) and show it.
@@ -153,3 +163,18 @@ acli <group> [<subgroup> ...] <command> {required flags} [optional flags]
 
 Groups: `jira` (Cloud), `confluence` (Cloud), `admin` (org), `rovodev` (AI agent, Beta), `feedback`.
 Other top-level commands: `auth` (router), `config`, `completion` (shell completions).
+
+## Global commands
+
+`acli auth` is a **global** OAuth router that authenticates/switches **all products at once**
+(separate from the per-product `jira auth` / `confluence auth` / `admin auth` / `rovodev auth`):
+
+```bash
+acli auth login        # global OAuth (browser)
+acli auth status       # show global account status
+acli auth switch [--site X --email Y]   # switch all products at once
+acli auth logout       # log out of all active OAuth accounts
+```
+
+`acli config gov-cloud` toggles the Atlassian Government Cloud environment
+(`--enable` / `--enable=false` / `--status`). Note GovCloud support is limited.
