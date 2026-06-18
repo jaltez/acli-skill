@@ -9,6 +9,18 @@ and Rovo Dev.
 This is a **reference skill** — static markdown only. It does not bundle or install the `acli`
 binary.
 
+## Install
+
+```bash
+npx skills add jaltez/acli-skill
+```
+
+This is a [skills.sh](https://skills.sh) skill. The installer drops the skill into your agent's
+discovery root with the correct `acli` folder name. Works with **OpenCode**, **Claude Code**, and
+**GitHub Copilot**.
+
+Reinstall or update anytime by re-running the command above.
+
 ## What's inside
 
 ```
@@ -43,28 +55,28 @@ The binary is **not** bundled. You must:
 Optional environment variables: `API_TOKEN` (Jira API token) and `API_KEY` (Admin API key) for
 non-interactive use. Interactive OAuth (`--web`) is the default and needs neither.
 
-## Install / import
+## Install / import (manual)
 
-The skill is a folder named `acli` containing `SKILL.md`. Clone or symlink it into any of the
-discovery roots below. It works with **OpenCode**, **Claude Code**, and **GitHub Copilot**.
+Prefer `git clone` over `npx skills add`? The skill is a folder named `acli` containing `SKILL.md`.
+Clone or symlink it into any of the discovery roots below.
 
 ### Global (every project)
 
 ```bash
 # OpenCode
-git clone <this-repo-url> ~/.config/opencode/skills/acli
+git clone https://github.com/jaltez/acli-skill ~/.config/opencode/skills/acli
 
 # Claude Code
-git clone <this-repo-url> ~/.claude/skills/acli
+git clone https://github.com/jaltez/acli-skill ~/.claude/skills/acli
 
 # GitHub Copilot
-git clone <this-repo-url> ~/.copilot/skills/acli
+git clone https://github.com/jaltez/acli-skill ~/.copilot/skills/acli
 ```
 
 ### Single project
 
 ```bash
-git clone <this-repo-url> .opencode/skills/acli      # OpenCode
+git clone https://github.com/jaltez/acli-skill .opencode/skills/acli      # OpenCode
 # or .claude/skills/acli (Claude Code) / .agents/skills/acli (Copilot-compatible)
 ```
 
