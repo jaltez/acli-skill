@@ -27,6 +27,7 @@ Reinstall or update anytime by re-running the command above.
 SKILL.md                                      Goal-first guide + command catalog + safety checklist
 references/
 ├── common-flags.md                           Shared output/pagination/automation/bulk-targeting flags
+├── jira-auth.md                              jira auth (login/logout/status/switch)
 ├── jira-workitem.md                          create/edit/search/transition/comment/link/...
 ├── jira-project-board-sprint.md              project / board / sprint
 ├── jira-filter-dashboard-field.md            filter / dashboard / field
@@ -106,6 +107,24 @@ flags from the linked `references/` file.
 - Bulk destructive runs must be previewed with a `search` using the same query first.
 - Org-wide `admin user *` commands require fresh per-turn confirmation and target enumeration, and
   must never run with `--ignore-errors` for `delete`/`deactivate`.
+
+## Maintenance
+
+`SKILL.md` records `metadata.last_verified` — the date and `acli` version this skill was checked
+against. The [official changelog](https://developer.atlassian.com/cloud/acli/changelog/) lags the
+binary; to re-verify, diff the command lists of your installed binary against the catalog in
+`SKILL.md`:
+
+```bash
+acli --version
+for g in jira confluence admin rovodev; do acli "$g" --help; done
+for g in workitem project board sprint filter dashboard field; do acli jira "$g" --help; done
+```
+
+Deprecated commands print their removal date in `--help` (currently 2026-12-01 for `jira board
+get`, `jira filter get`, `jira filter get-columns`, `jira workitem watcher list`, and
+`jira field cancel-delete`). Once a removal date passes, delete the deprecated alias from this
+skill and bump `metadata.last_verified`.
 
 ## References
 

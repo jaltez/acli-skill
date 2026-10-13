@@ -23,6 +23,8 @@ Shared flags: [`common-flags.md`](common-flags.md).
 
 **view**: `--id <filter-id> [--json] [--web]`
 
+> `acli jira filter get` is **DEPRECATED** (removed 2026-12-01) — use `filter view`.
+
 **update**
 | Flag | Description |
 |------|-------------|
@@ -44,6 +46,8 @@ Shared flags: [`common-flags.md`](common-flags.md).
 
 **list-columns**: `--key <filter-id-or-key> [--json]` — configured columns for a filter.
 **reset-columns**: `--id <filter-id>` — reset columns to defaults.
+
+> `acli jira filter get-columns` is **DEPRECATED** (removed 2026-12-01) — use `filter list-columns`.
 
 ```bash
 acli jira filter list --my --json

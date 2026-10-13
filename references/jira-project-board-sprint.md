@@ -84,6 +84,8 @@ acli jira project restore --key PROJECT-KEY
 
 **view**: `--id <board-id> [--json]`
 
+> `acli jira board get` is **DEPRECATED** (removed 2026-12-01) — use `board view`.
+
 **delete — DESTRUCTIVE**: deletes one or more boards.
 | Flag | Description |
 |------|-------------|

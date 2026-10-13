@@ -5,8 +5,9 @@ license: MIT
 compatibility: "Requires the acli binary (https://developer.atlassian.com/cloud/acli/guides/install-acli/) installed and authenticated. Optional env vars: API_TOKEN (Jira API token for non-interactive auth), API_KEY (Admin API key for org-admin commands). Interactive OAuth via `acli jira auth login --web` is the default."
 metadata:
   author: javier
-  version: "1.0"
+  version: "1.1"
   acli_version: ">=1.3.19"
+  last_verified: "2026-10-13 (acli 1.3.23-stable)"
 ---
 
 # Atlassian CLI (`acli`) — agent guide
@@ -48,6 +49,8 @@ echo "$API_KEY" | acli admin auth login --email "you@example.com" --token
 ```
 
 Switch accounts with `acli jira auth switch` / `acli admin auth switch`.
+
+Full `jira auth` flags: [`references/jira-auth.md`](references/jira-auth.md).
 
 ## Choose by goal
 
@@ -121,14 +124,17 @@ acli feedback --summary "..." --details "..." --email you@example.com           
 
 One line per command. Open the linked file for flags and examples.
 
+**jira auth** → [`references/jira-auth.md`](references/jira-auth.md)
+`login` / `logout` / `status` / `switch`
+
 **jira workitem** → [`references/jira-workitem.md`](references/jira-workitem.md)
 `create` · `create-bulk` · `edit` · `view` · `search` · `assign` · `transition` · `delete` · `clone` · `archive` · `unarchive` · `comment (create/update/delete/list/visibility)` · `link (create/delete/list/type)` · `attachment (list/delete)` · `list-watchers` · `watcher remove` (`watcher list` deprecated → `list-watchers`)
 
 **jira project / board / sprint** → [`references/jira-project-board-sprint.md`](references/jira-project-board-sprint.md)
-`project (list/view/create/update/delete/archive/restore)` · `board (create/view/delete/list-projects/search/list-sprints)` · `sprint (create/view/update/delete/list-workitems)`
+`project (list/view/create/update/delete/archive/restore)` · `board (create/view/delete/list-projects/search/list-sprints)` (`get` deprecated → `view`) · `sprint (create/view/update/delete/list-workitems)`
 
 **jira filter / dashboard / field** → [`references/jira-filter-dashboard-field.md`](references/jira-filter-dashboard-field.md)
-`filter (list/search/view/update/add-favourite/change-owner/list-columns/reset-columns)` · `dashboard (search)` · `field (create/update/delete/restore)` (`cancel-delete` deprecated → `restore`)
+`filter (list/search/view/update/add-favourite/change-owner/list-columns/reset-columns)` (`get` deprecated → `view`, `get-columns` deprecated → `list-columns`) · `dashboard (search)` · `field (create/update/delete/restore)` (`cancel-delete` deprecated → `restore`)
 
 **confluence** → [`references/confluence.md`](references/confluence.md)
 `auth (login/logout/status/switch)` · `space (list/view/create/update/archive/restore)` · `blog (create/list/view)` · `page (view)`
