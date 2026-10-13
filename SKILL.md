@@ -4,7 +4,7 @@ description: "Terminal reference for the Atlassian CLI (acli). Use when the user
 license: MIT
 compatibility: "Requires the acli binary (https://developer.atlassian.com/cloud/acli/guides/install-acli/) installed and authenticated. Optional env vars: API_TOKEN (Jira API token for non-interactive auth), API_KEY (Admin API key for org-admin commands). Interactive OAuth via `acli jira auth login --web` is the default."
 metadata:
-  author: javier
+  author: Javier Altez
   version: "1.1"
   acli_version: ">=1.3.19"
   last_verified: "2026-10-13 (acli 1.3.23-stable)"
